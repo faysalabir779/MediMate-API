@@ -53,6 +53,20 @@ def add_product(name, price, category, stack,certified):
 
 
                             
+def available_order(user_id, product_id, price, product_name, category, stock):
+
+    conn = sqlite3.connect("my_medicalShop.db")
+    cursor = conn.cursor()
+
+    cursor.execute("""
+
+    INSERT INTO Available_Products (user_id, product_id, price, product_name,category, stock)
+    VALUES (?, ?, ?, ?,?,?)
+
+    """, (user_id, product_id, price, product_name,category, stock))
+    
+    conn.commit()
+    conn.close()
 
 
 

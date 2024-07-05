@@ -71,8 +71,37 @@ def getSpacificUsers(userId):
     return json.dumps(userJson)
 
 
+#This the GetAllAvailableProducts
 
+def get_available_product():
 
+    conn = sqlite3.connect("my_medicalShop.db")
+    cursor = conn.cursor()
+
+    cursor.execute(" SELECT * FROM Available_Products ")
+    aps= cursor.fetchall()
+    conn.close()
+
+    available_products = []
+
+    for availableProducts in aps:
+
+        tempap = {
+
+            "id" : availableProducts[0],
+            "user_id" : availableProducts[1],
+            "product_id" : availableProducts[2],
+            "price" : availableProducts[3],
+            "product_name" : availableProducts[4],
+            "category" : availableProducts[5],
+            "stock" : availableProducts[6]
+            
+        
+        }
+
+        available_products.append(tempap)
+
+    return  json.dumps(available_products)
 
 
 

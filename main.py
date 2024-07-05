@@ -1,7 +1,7 @@
 
 from flask import Flask, request, jsonify
-from db.addOpration import createUser, add_product, order_details
-from db.readOpration import getAllUsers, getSpacificUsers, get_spacific_product, get_all_product, get_all_orders_detail, get_order_details_by_filter
+from db.addOpration import createUser, add_product, order_details, available_order
+from db.readOpration import getAllUsers, getSpacificUsers, get_spacific_product, get_all_product, get_all_orders_detail, get_order_details_by_filter, get_available_product
 from db.updatesOpratons import update_product_details, update_user_all_details, update_order_details
 from db.createTableOpration import createTables
 
@@ -128,6 +128,40 @@ def addProduct():
         return jsonify({'message' : str(error), 'status' : 400 }),400
 
 
+
+# This is for avaiable products in the database
+@app.route('/avaiableProducts', methods = ['POST'])
+def availableProducts():
+
+    try:
+
+        user_id = request.form['user_i d']
+        product_id = request.form['product_id']
+        price = request.form['price']
+        product_name = request.form['product_name']
+        category = request.form['category']
+        stock = request.form['stock']
+
+        available_order(user_id=user_id, product_id=product_id,price=price, product_name=product_name, category=category, stock=stock)
+
+        return jsonify({'message' : 'Add To Available order Successfully', 'status' : 200}), 200
+
+    except Exception as error:
+
+        return jsonify({'message' : str(error), 'status' : 400 }),400
+    
+
+#This is GetAvailable Products
+@app.route('/getAvailableProducts', methods = ['GET'])
+def getAvailableProducts():
+
+    try:
+
+        return get_available_product()
+
+    except Exception as error:
+
+        return jsonify({'message' : str(error), 'status' : 400 }),400
 
 
 # This is for get all product details
