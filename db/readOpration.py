@@ -241,3 +241,37 @@ def get_order_details_by_filter(user_id, isApproved):
     return json.dumps(ordersDeatilsList)
 
 
+def get_sell_details():
+
+    conn = sqlite3.connect("my_medicalShop.db")
+    cursor = conn.cursor()
+
+    cursor.execute(" SELECT * FROM Sell_History")
+    aps= cursor.fetchall()
+    conn.close()
+
+    sell = []
+
+    for Sell in aps:
+
+        tempap = {
+
+            "id" : Sell[0],
+            "sell_id" : Sell[1],
+            "user_id" : Sell[2],
+            "user_name" : Sell[3],
+            "product_id" : Sell[4],
+            "product_name" : Sell[5],
+            "category" : Sell[6],
+            "quantity" : Sell[7],
+            "remaining_stock" : Sell[8],
+            "date_of_create_order" : Sell[9],
+            "total_amount" : Sell[10],
+        
+            
+        
+        }
+
+        sell.append(tempap)
+
+    return  json.dumps(sell)

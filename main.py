@@ -1,7 +1,7 @@
 
 from flask import Flask, request, jsonify
-from db.addOpration import createUser, add_product, order_details, available_order
-from db.readOpration import getAllUsers, getSpacificUsers, get_spacific_product, get_all_product, get_all_orders_detail, get_order_details_by_filter, get_available_product
+from db.addOpration import createUser, add_product, order_details, available_order, sell_history
+from db.readOpration import getAllUsers, getSpacificUsers, get_spacific_product, get_all_product, get_all_orders_detail, get_order_details_by_filter, get_available_product, get_sell_details
 from db.updatesOpratons import update_product_details, update_user_all_details, update_order_details
 from db.createTableOpration import createTables
 
@@ -305,9 +305,41 @@ def getOrderDetailsByFilter():
     except Exception as error:
 
         return jsonify({'message': str(error), 'status': 400}), 400
+    
+
+@app.route('/sellDetails', methods = ['POST'])
+def sell():
+
+    try:
+
+        User_id = request.form['user_id']
+        User_name = request.form['user_name']
+        Product_id = request.form['product_id']
+        Product_name = request.form['product_name']
+        Category = request.form['category']
+        Quantity = request.form['quantity']
+        Remaining_Stock = request.form['remaining_stock']
+        Total_Amount = request.form['total_amount']
+
+        sell_id = sell_history(User_id, User_name, Product_id, Product_name, Category, Quantity, Remaining_Stock, Total_Amount)
+
+        return jsonify({'message' : sell_id, 'status' : 200}), 200
+
+    except Exception as error:
+
+        return jsonify({'message' : str(error), 'status' : 400 }),400
 
 
+@app.route('/getAllSellDetails', methods = ['GET'])
+def getSellDetails():
 
+    try:
+        return get_sell_details()
+
+    except Exception as error:
+
+        return jsonify({'message' : str(error), 'status' : 400 }),400
+    
 
 if __name__ == "__main__":
     createTables()

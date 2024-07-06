@@ -89,3 +89,24 @@ def order_details(user_id, user_Name, user_address, phone, product_id, product_N
     conn.close()
     
 
+def sell_history(user_id, user_name, product_id, product_name, category, quantity, remaining_stock, total_amount):
+    try:
+        conn = sqlite3.connect("my_medicalShop.db")
+        cursor = conn.cursor()
+
+        dataOfCreation = date.today()
+        sell_id = str(uuid.uuid4())
+
+        cursor.execute("""
+            INSERT INTO Sell_History(sell_id, user_id, user_name, product_id, product_name, category, quantity, remaining_stock, date_of_create_order, total_amount)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, (sell_id, user_id, user_name, product_id, product_name, category, quantity, remaining_stock, dataOfCreation, total_amount))
+
+        conn.commit()
+        conn.close()
+
+        return sell_id
+
+    except Exception as e:
+        raise ValueError("User creation failed: " + str(e))
+    

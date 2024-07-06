@@ -64,5 +64,22 @@ def createTables():
         );
     ''')
 
+    # This is for sell history if not exists
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS Sell_History(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            sell_id VARCHAR(255),
+            user_id VARCHAR(255),
+            user_name VARCHAR(255),
+            product_id VARCHAR(255),
+            product_name VARCHAR(255),
+            category VARCHAR(255),
+            quantity INT,
+            remaining_stock INT,
+            date_of_create_order DATE,
+            total_amount FLOAT
+        );
+    ''')
+
     conn.commit()
     conn.close()
