@@ -135,7 +135,7 @@ def availableProducts():
 
     try:
 
-        user_id = request.form['user_i d']
+        user_id = request.form['user_id']
         product_id = request.form['product_id']
         price = request.form['price']
         product_name = request.form['product_name']
@@ -240,8 +240,9 @@ def addOrderDetails():
         Total_amount = request.form['total_amount']
         Quantity = request.form['quantity']
         Status = request.form['status']
+        Product_price = request.form['product_price']
 
-        order_details(user_id=User_id, user_Name=User_Name, user_address= User_Address, phone=Phone_Number, product_id=Product_id, product_Name= Product_name, category= Category, status=Status, total_amount=Total_amount, quantity=Quantity)
+        order_details(user_id=User_id, user_Name=User_Name, user_address= User_Address, phone=Phone_Number, product_id=Product_id, product_Name= Product_name, category= Category, status=Status, total_amount=Total_amount, quantity=Quantity, product_price=Product_price)
 
         return jsonify({'message' : 'Order Created Successfully', 'status' : 200}), 200
 

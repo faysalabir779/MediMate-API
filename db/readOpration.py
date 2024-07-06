@@ -198,7 +198,8 @@ def get_all_orders_detail ():
             "isApproved" : d[9],
             "quantity" : d[10],
             "date_of_craete_order" : d[11],
-            "total_amount" : d[12]
+            "total_amount" : d[12],
+            "product_price" : d[13],
         }
 
         deatilsList.append(tempDetails)

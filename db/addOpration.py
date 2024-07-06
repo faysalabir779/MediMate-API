@@ -73,17 +73,17 @@ def available_order(user_id, product_id, price, product_name, category, stock):
 
 # This is for add order details
 
-def order_details(user_id, user_Name, user_address, phone, product_id, product_Name, category, status, total_amount, quantity):
+def order_details(user_id, user_Name, user_address, phone, product_id, product_Name, category, status, total_amount, quantity, product_price):
     conn = sqlite3.connect("my_medicalShop.db")
     cursor = conn.cursor()
 
-    date_of_craete_order = date.today()
+    date_of_create_order = date.today()
 
     cursor.execute("""
 
-            INSERT INTO Order_Details (user_id, user_name, user_address, phone, product_id, product_name, category, status, isApproved, quantity, date_of_craete_order, total_amount)
-            VALUES (?,?,?,?,?,?,?,?,?,?,?,?)
-    """, (user_id, user_Name, user_address, phone, product_id, product_Name, category, status, "" ,quantity, date_of_craete_order, total_amount))
+            INSERT INTO Order_Details (user_id, user_name, user_address, phone, product_id, product_name, category, status, isApproved, quantity, date_of_create_order, total_amount, product_price)
+            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)
+    """, (user_id, user_Name, user_address, phone, product_id, product_Name, category, status, "" ,quantity, date_of_create_order, total_amount, product_price))
 
     conn.commit()
     conn.close()

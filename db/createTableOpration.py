@@ -47,7 +47,8 @@ def createTables():
             isApproved BOOLEAN,
             quantity INT,
             date_of_create_order DATE,
-            total_amount FLOAT
+            total_amount FLOAT,
+            product_price FLOAT
         );
     ''')
 
