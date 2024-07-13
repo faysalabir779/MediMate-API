@@ -8,7 +8,7 @@ import json
 def getAllUsers():
     conn = sqlite3.connect("my_medicalShop.db")
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM User")
+    cursor.execute("SELECT * FROM Users")
 
     users = cursor.fetchall()
     conn.close()
@@ -18,20 +18,36 @@ def getAllUsers():
 
     for user in users:
         tempUser = {
-            "Id": user[0],
-            "User_id": user[1],
-            "Password": user[2],
-            "Level": user[3],
-            "Date_of_account_creation": user[4],
-            "isApproved": user[5],
-            "Name": user[6],
-            "Address": user[7],
-            "Email": user[8],
-            "Phone": user[9],
-            "PinCode": user[10],
+            "id": user[0],
+            "user_id": user[1],
+            "password": user[2],
+            "level": user[3],
+            "date_of_account_creation": user[4],
+            "phone_info": user[5],
+            "isApproved": user[6],
+            "block": user[7],
+            "name": user[8],
+            "address": user[9],
+            "email": user[10],
+            "phone_number": user[11],
+            "pinCode": user[12]
         }
         userJson.append(tempUser)
     return json.dumps(userJson)
+
+
+
+## Login User
+
+def authenticate_user(email, password):
+    conn = sqlite3.connect("my_medicalShop.db")
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT * FROM Users WHERE email = ? AND password = ?", (email, password))
+    user = cursor.fetchone()
+    conn.close()
+    
+    return user
 
 
 
@@ -43,7 +59,7 @@ def getSpacificUsers(userId):
     conn = sqlite3.connect("my_medicalShop.db")
     cursor = conn.cursor()
 
-    cursor.execute( "SELECT * FROM User WHERE User_id=?", (userId,))
+    cursor.execute( "SELECT * FROM Users WHERE user_id=?", (userId,))
 
     users = cursor.fetchall()
     conn.close()
@@ -53,17 +69,19 @@ def getSpacificUsers(userId):
     for user in users:
 
         tempUser = {
-             "Id": user[0],
-            "User_id": user[1],
-            "Password": user[2],
-            "Level": user[3],
-            "Date_of_account_creation": user[4],
-            "isApproved": user[5],
-            "Name": user[6],
-            "Address": user[7],
-            "Email": user[8],
-            "Phone": user[9],
-            "PinCode": user[10]
+            "id": user[0],
+            "user_id": user[1],
+            "password": user[2],
+            "level": user[3],
+            "date_of_account_creation": user[4],
+            "phone_info": user[5],
+            "isApproved": user[6],
+            "block": user[7],
+            "name": user[8],
+            "address": user[9],
+            "email": user[10],
+            "phone_number": user[11],
+            "pinCode": user[12]
         }
 
         userJson.append(tempUser)
@@ -71,37 +89,8 @@ def getSpacificUsers(userId):
     return json.dumps(userJson)
 
 
-#This the GetAllAvailableProducts
 
-def get_available_product():
 
-    conn = sqlite3.connect("my_medicalShop.db")
-    cursor = conn.cursor()
-
-    cursor.execute(" SELECT * FROM Available_Products ")
-    aps= cursor.fetchall()
-    conn.close()
-
-    available_products = []
-
-    for availableProducts in aps:
-
-        tempap = {
-
-            "id" : availableProducts[0],
-            "user_id" : availableProducts[1],
-            "product_id" : availableProducts[2],
-            "price" : availableProducts[3],
-            "product_name" : availableProducts[4],
-            "category" : availableProducts[5],
-            "stock" : availableProducts[6]
-            
-        
-        }
-
-        available_products.append(tempap)
-
-    return  json.dumps(available_products)
 
 
 
@@ -123,11 +112,12 @@ def get_all_product():
         tempap = {
 
             "id" : allProduct[0],
-            "name" : allProduct[1],
-            "price" : allProduct[2],
-            "category" : allProduct[3],
-            "certified" : allProduct[4],
-            "stack" : allProduct[5]
+            "products_id" : allProduct[1],
+            "name" : allProduct[2],
+            "price" : allProduct[3],
+            "category" : allProduct[4],
+            "certified" : allProduct[5],
+            "stock" : allProduct[6]
             
         
         }
@@ -141,12 +131,12 @@ def get_all_product():
 
 # This is for get spacific product details
 
-def get_spacific_product(id):
+def get_spacific_product(products_id):
 
     conn = sqlite3.connect('my_medicalShop.db')
     cursor = conn.cursor()
 
-    cursor.execute(" SELECT * FROM Products WHERE Products_Id=? ",(id,))
+    cursor.execute(" SELECT * FROM Products WHERE products_id=? ",(products_id,))
     
     products = cursor.fetchall()
     conn.close()  
@@ -158,16 +148,18 @@ def get_spacific_product(id):
         tempProducts = {
 
             "id" : product[0],
-            "name" : product[1],
-            "price" : product[2],
-            "category" : product[3],
-            "certified" : product[4],
-            "stack" : product[5]
+            "products_id" : product[1],
+            "name" : product[2],
+            "price" : product[3],
+            "category" : product[4],
+            "certified" : product[5],
+            "stock" : product[6]
         }
 
         productJson.append(tempProducts)
 
     return json.dumps(productJson)
+
 
 
 # This is for get all orders detail
@@ -187,25 +179,24 @@ def get_all_orders_detail ():
         tempDetails ={
 
             "id" : d[0],
-            "user_id" : d[1],
-            "user_name" : d[2],
-            "user_address" : d[3],
-            "phone": d[4],
-            "product_id" : d[5],
-            "product_name" : d[6],
-            "category": d[7],
-            "status" : d[8],
-            "isApproved" : d[9],
-            "quantity" : d[10],
-            "date_of_craete_order" : d[11],
-            "total_amount" : d[12],
-            "product_price" : d[13],
+            "order_id" : d[1],
+            "user_id" : d[2],
+            "product_id" : d[3],
+            "isApproved" : d[4],
+            "quantity" : d[5],
+            "date_of_order_creation" : d[6],
+            "price" : d[7],
+            "total_amount" : d[8],
+            "product_name" : d[9],
+            "user_name" : d[10],
+            "message" : d[11],
+            "certified" : d[12],
+            "category" : d[13]
         }
 
         deatilsList.append(tempDetails)
     return json.dumps(deatilsList)
-
-
+    
 
 
 
@@ -229,50 +220,171 @@ def get_order_details_by_filter(user_id, isApproved):
         tempOrdersDeatilsList ={
 
             "id" : d[0],
-            "user_id" : d[1],
-            "product_id" : d[2],
-            "status" : d[3],
+            "order_id" : d[1],
+            "user_id" : d[2],
+            "product_id" : d[3],
             "isApproved" : d[4],
             "quantity" : d[5],
-            "date_of_craete_order" : d[6],
-            "total_amount" : d[7],
+            "date_of_order_creation" : d[6],
+            "price" : d[7],
+            "total_amount" : d[8],
+            "product_name" : d[9],
+            "user_name" : d[10],
+            "message" : d[11],
+            "certified" : d[12]
         }
 
         ordersDeatilsList.append(tempOrdersDeatilsList)
     return json.dumps(ordersDeatilsList)
 
 
-def get_sell_details():
 
+
+
+# This is for get sell_history
+
+def get_sell_history():
     conn = sqlite3.connect("my_medicalShop.db")
     cursor = conn.cursor()
 
-    cursor.execute(" SELECT * FROM Sell_History")
-    aps= cursor.fetchall()
+    cursor.execute("""SELECT * FROM Sell_History""")
+
+    sell_history = cursor.fetchall()
     conn.close()
+    sell_history_list =[]
 
-    sell = []
+    for s in sell_history:
 
-    for Sell in aps:
+        tempSellHitorylsList ={
 
-        tempap = {
-
-            "id" : Sell[0],
-            "sell_id" : Sell[1],
-            "user_id" : Sell[2],
-            "user_name" : Sell[3],
-            "product_id" : Sell[4],
-            "product_name" : Sell[5],
-            "category" : Sell[6],
-            "quantity" : Sell[7],
-            "remaining_stock" : Sell[8],
-            "date_of_create_order" : Sell[9],
-            "total_amount" : Sell[10],
-        
-            
-        
+            "id" : s[0],
+            "sell_id" : s[1],
+            "product_id" : s[2],
+            "quantity" : s[3],
+            "remaining_stock" : s[4],
+            "date_of_sell" : s[5],
+            "total_amount" : s[6],
+            "price" : s[7],
+            "product_name" : s[8],
+            "user_name" : s[9],
+            "user_id" : s[10]
         }
 
-        sell.append(tempap)
+        sell_history_list.append(tempSellHitorylsList)
+    return json.dumps(sell_history_list)
 
-    return  json.dumps(sell)
+
+
+
+
+# This is for get Available Products
+
+def get_available_products():
+    conn = sqlite3.connect("my_medicalShop.db")
+    cursor = conn.cursor()
+
+    cursor.execute("""SELECT * FROM Available_Products""")
+
+    available = cursor.fetchall()
+    conn.close()
+    available_product__list =[]
+
+    for a in available:
+
+        tempAvailableProductist ={
+
+            "id" :a[0],
+            "product_id" : a[1],
+            "product_name" : a[2],
+            "category" : a[3],
+            "certified" : a[4],
+            "price" : a[5],
+            "stock" : a[6],
+            "user_name" : a[7],
+            "user_id" : a[8]
+        }
+
+        available_product__list.append(tempAvailableProductist)
+    return json.dumps(available_product__list)
+
+
+
+
+
+
+
+
+# This is for get Available Products by UserId
+
+def get_available_products_by_user_id(user_id):
+    conn = sqlite3.connect("my_medicalShop.db")
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT * FROM Available_Products WHERE user_id = ?
+    """, (user_id,))
+
+    orders = cursor.fetchall()
+    conn.close()
+    availableProductsList =[]
+
+    for a in orders:
+
+        tempAvailableProductsList ={
+
+            "id" :a[0],
+            "product_id" : a[1],
+            "product_name" : a[2],
+            "category" : a[3],
+            "certified" : a[4],
+            "price" : a[5],
+            "stock" : a[6],
+            "user_name" : a[7],
+            "user_id" : a[8]
+        }
+
+        availableProductsList.append(tempAvailableProductsList)
+    return json.dumps(availableProductsList)
+
+
+
+
+
+
+
+
+
+# This is for get sell_history by userId
+
+def get_sell_history_by_user_Id(user_id):
+    conn = sqlite3.connect("my_medicalShop.db")
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT * FROM Sell_History WHERE user_id = ?
+    """, (user_id,))
+
+    sell_history = cursor.fetchall()
+    conn.close()
+
+    sell_history_list =[]
+
+    for s in sell_history:
+
+        tempSellHitorylsList ={
+
+            "id" : s[0],
+            "sell_id" : s[1],
+            "product_id" : s[2],
+            "quantity" : s[3],
+            "remaining_stock" : s[4],
+            "date_of_sell" : s[5],
+            "total_amount" : s[6],
+            "price" : s[7],
+            "product_name" : s[8],
+            "user_name" : s[9],
+            "user_id" : s[10]
+        }
+
+        sell_history_list.append(tempSellHitorylsList)
+    return json.dumps(sell_history_list)
